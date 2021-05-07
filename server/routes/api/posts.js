@@ -34,6 +34,29 @@ router.delete('/:id',async (req,res)=>{
     res.status(200).send()
 })
 
+// get single post 
+router.get('/:id',async (req,res)=>{
+    const posts = await loadPostsCollection();
+    const id = req.params.id
+
+    res.status(200).
+    send(await posts.findOne({_id:new mongodb.ObjectID(id)}))
+})
+
+// update post 
+router.put('/:id',async (req,res)=>{
+    const posts = await loadPostsCollection();
+    const id = req.params.id 
+
+    await posts.update({_id: new mongodb.ObjectID(id)},{
+        text : req.body.text,
+        createdAt: new Date()
+    })
+
+    res.status(201).send()
+})
+
+
 
 
 // database connection
